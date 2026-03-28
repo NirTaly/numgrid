@@ -1,0 +1,691 @@
+/* ============================================================
+   ONE UP - Mobile-First Puzzle Game
+   ============================================================ */
+
+:root {
+    --bg: #f8f9fa;
+    --bg-card: #ffffff;
+    --text: #1a1a2e;
+    --text-secondary: #6c757d;
+    --accent: #4361ee;
+    --accent-light: #e8ecff;
+    --error: #ef476f;
+    --success: #06d6a0;
+    --warning: #ffd166;
+    --given-bg: #e9ecef;
+    --given-text: #495057;
+    --selected-bg: #4361ee;
+    --selected-text: #ffffff;
+    --highlight-bg: #e8ecff;
+    --border: #dee2e6;
+    --region-border: #1a1a2e;
+    --cell-border: #ced4da;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-lg: 0 4px 16px rgba(0,0,0,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+
+    /* Region colors - soft pastels */
+    --region-0: #ffeaa7;
+    --region-1: #dfe6e9;
+    --region-2: #fab1a0;
+    --region-3: #81ecec;
+    --region-4: #a29bfe;
+    --region-5: #ffeaa7;
+    --region-6: #55efc4;
+    --region-7: #fd79a8;
+    --region-8: #74b9ff;
+    --region-9: #e17055;
+    --region-10: #00cec9;
+    --region-11: #6c5ce7;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f0f1a;
+        --bg-card: #1a1a2e;
+        --text: #e8e8e8;
+        --text-secondary: #8899aa;
+        --accent: #5a7cff;
+        --accent-light: #1e2a4a;
+        --given-bg: #252540;
+        --given-text: #aabbcc;
+        --highlight-bg: #1e2a4a;
+        --border: #2a2a3e;
+        --region-border: #888;
+        --cell-border: #333355;
+        --shadow: 0 2px 8px rgba(0,0,0,0.3);
+
+        --region-0: #3d3520;
+        --region-1: #2a3035;
+        --region-2: #3d2520;
+        --region-3: #1a3535;
+        --region-4: #2a2540;
+        --region-5: #3d3520;
+        --region-6: #1a3525;
+        --region-7: #3d2035;
+        --region-8: #1a2535;
+        --region-9: #3d2520;
+        --region-10: #1a3530;
+        --region-11: #2a2040;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    -webkit-user-select: none;
+    overflow: hidden;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    min-height: 48px;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.timer {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    min-width: 48px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+
+.btn-icon:active {
+    background: var(--accent-light);
+}
+
+/* ============================================================
+   LEVEL INFO
+   ============================================================ */
+
+.level-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: var(--bg);
+}
+
+.level-bar .size-badge {
+    background: var(--accent);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 11px;
+}
+
+.difficulty-stars {
+    letter-spacing: 2px;
+}
+
+/* ============================================================
+   GAME GRID
+   ============================================================ */
+
+.grid-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    overflow: hidden;
+}
+
+.grid {
+    display: grid;
+    gap: 0;
+    border: 2.5px solid var(--region-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    max-width: min(90vw, 90vh - 200px);
+    max-height: min(90vw, 90vh - 200px);
+    width: 100%;
+    aspect-ratio: 1;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(16px, 5vw, 32px);
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.1s;
+    border: 0.5px solid var(--cell-border);
+}
+
+.cell.given {
+    font-weight: 700;
+    color: var(--given-text);
+    cursor: default;
+}
+
+.cell.selected {
+    background: var(--selected-bg) !important;
+    color: var(--selected-text);
+    z-index: 2;
+}
+
+.cell.highlighted {
+    background: var(--highlight-bg) !important;
+}
+
+.cell.error {
+    color: var(--error);
+    animation: shake 0.3s ease-in-out;
+}
+
+.cell.error::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border: 2px solid var(--error);
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+/* Region borders - thick borders between different regions */
+.cell.border-top { border-top: 2.5px solid var(--region-border); }
+.cell.border-bottom { border-bottom: 2.5px solid var(--region-border); }
+.cell.border-left { border-left: 2.5px solid var(--region-border); }
+.cell.border-right { border-right: 2.5px solid var(--region-border); }
+
+/* Notes (pencil marks) */
+.cell .notes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+    font-size: clamp(7px, 2vw, 12px);
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.cell .notes span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+@keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.cell.just-placed {
+    animation: pop 0.2s ease-out;
+}
+
+/* ============================================================
+   NUMBER PAD
+   ============================================================ */
+
+.controls {
+    padding: 8px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+}
+
+.numpad {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.numpad-btn {
+    flex: 1;
+    max-width: 56px;
+    aspect-ratio: 1;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font-size: clamp(16px, 4.5vw, 24px);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.numpad-btn:active {
+    transform: scale(0.92);
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.numpad-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.numpad-btn.erase {
+    font-size: clamp(14px, 3.5vw, 20px);
+}
+
+/* ============================================================
+   ACTION BUTTONS
+   ============================================================ */
+
+.actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+
+.action-btn {
+    flex: 1;
+    max-width: 120px;
+    padding: 10px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+    background: var(--accent-light);
+}
+
+.action-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.action-btn .icon {
+    font-size: 16px;
+}
+
+/* ============================================================
+   MENU / LEVEL SELECT
+   ============================================================ */
+
+.screen {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.menu-screen {
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding: 24px;
+}
+
+.menu-title {
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -2px;
+}
+
+.menu-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: -16px;
+}
+
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.menu-btn {
+    padding: 16px 24px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.menu-btn:active {
+    transform: scale(0.97);
+    border-color: var(--accent);
+    background: var(--accent-light);
+}
+
+.menu-btn .btn-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-top: 2px;
+}
+
+/* Level select */
+.level-select {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.level-select h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.size-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.size-tab {
+    padding: 8px 16px;
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+}
+
+.size-tab.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.diff-section {
+    margin-bottom: 20px;
+}
+
+.diff-section h3 {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+    gap: 6px;
+}
+
+.level-item {
+    aspect-ratio: 1;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.1s;
+    background: var(--bg-card);
+}
+
+.level-item:active {
+    transform: scale(0.92);
+}
+
+.level-item.completed {
+    background: var(--success);
+    color: white;
+    border-color: var(--success);
+}
+
+.level-item.current {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ============================================================
+   COMPLETION OVERLAY
+   ============================================================ */
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.overlay.active {
+    display: flex;
+}
+
+.overlay-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    text-align: center;
+    max-width: 320px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    animation: pop 0.3s ease-out;
+}
+
+.overlay-card h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.overlay-card .stats {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.overlay-card .btn-row {
+    display: flex;
+    gap: 8px;
+}
+
+.overlay-card .btn-row button {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.overlay-card .btn-primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.overlay-card .btn-secondary {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ============================================================
+   SETTINGS
+   ============================================================ */
+
+.settings-list {
+    padding: 16px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.setting-label {
+    font-weight: 600;
+}
+
+.setting-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.toggle {
+    width: 48px;
+    height: 28px;
+    border-radius: 14px;
+    background: var(--border);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.toggle.on {
+    background: var(--accent);
+}
+
+.toggle::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: white;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.2s;
+}
+
+.toggle.on::after {
+    transform: translateX(20px);
+}
+
+/* ============================================================
+   CONFETTI
+   ============================================================ */
+
+.confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    z-index: 200;
+    pointer-events: none;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (min-width: 600px) {
+    .grid {
+        max-width: 400px;
+        max-height: 400px;
+    }
+
+    .numpad-btn {
+        max-width: 64px;
+    }
+}
+
+/* Landscape phone */
+@media (max-height: 600px) and (orientation: landscape) {
+    .header { padding: 4px 16px; min-height: 36px; }
+    .level-bar { padding: 2px 16px; }
+    .grid-container { padding: 4px; }
+    .controls { padding: 4px 16px 0; gap: 4px; }
+    .numpad-btn { max-width: 44px; }
+    .action-btn { padding: 6px 8px; }
+}
