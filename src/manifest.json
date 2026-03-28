@@ -1,6 +1,6 @@
 {
-    "name": "NumGrid - Number Puzzle",
-    "short_name": "NumGrid",
+    "name": "Shmiloku - Number Puzzle",
+    "short_name": "Shmiloku",
     "description": "A number placement puzzle game with irregular regions",
     "start_url": "./",
     "display": "standalone",

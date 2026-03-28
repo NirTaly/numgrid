@@ -3,7 +3,7 @@
  */
 
 class Storage {
-    static PREFIX = 'numgrid_';
+    static PREFIX = 'shmiloku_';
 
     static save(key, value) {
         try {

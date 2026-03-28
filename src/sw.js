@@ -1,4 +1,4 @@
-const CACHE_NAME = 'numgrid-v1';
+const CACHE_NAME = 'shmiloku-v1';
 const ASSETS = [
     './',
     './index.html',

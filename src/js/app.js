@@ -350,11 +350,19 @@ class App {
 document.addEventListener('DOMContentLoaded', () => {
     new App();
 
-    // Prevent iOS bounce/overscroll on game screen
+    // Prevent iOS bounce/overscroll — only block on game screen
     document.addEventListener('touchmove', (e) => {
-        const target = e.target.closest('.level-select, .settings-list, #screen-howto > div:last-child, .menu-screen');
-        if (!target) {
-            e.preventDefault();
+        // Allow scrolling on any element that has overflow scroll/auto
+        let el = e.target;
+        while (el && el !== document.body) {
+            const style = window.getComputedStyle(el);
+            const overflowY = style.overflowY;
+            if (overflowY === 'auto' || overflowY === 'scroll') {
+                return; // Allow native scroll
+            }
+            el = el.parentElement;
         }
+        // Block bounce on non-scrollable areas (game grid, controls)
+        e.preventDefault();
     }, { passive: false });
 });
