@@ -349,4 +349,12 @@ class App {
 
 document.addEventListener('DOMContentLoaded', () => {
     new App();
+
+    // Prevent iOS bounce/overscroll on game screen
+    document.addEventListener('touchmove', (e) => {
+        const target = e.target.closest('.level-select, .settings-list, #screen-howto > div:last-child, .menu-screen');
+        if (!target) {
+            e.preventDefault();
+        }
+    }, { passive: false });
 });
