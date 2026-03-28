@@ -59,7 +59,7 @@ class Renderer {
                 const key = `${r},${c}`;
 
                 // Clear dynamic classes
-                cell.classList.remove('selected', 'highlighted', 'same-number', 'error', 'just-placed');
+                cell.classList.remove('selected', 'same-number', 'error', 'just-placed');
 
                 // Get selected cell's value for same-number highlighting
                 const selVal = sel ? this.game.grid[sel.r][sel.c] : 0;

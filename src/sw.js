@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shmiloku-v2';
+const CACHE_NAME = 'shmiloku-v3';
 const ASSETS = [
     './',
     './index.html',
@@ -30,14 +30,14 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-    // Network-first for HTML (so security updates propagate), cache-first for assets
-    if (e.request.mode === 'navigate') {
-        e.respondWith(
-            fetch(e.request).catch(() => caches.match(e.request))
-        );
-    } else {
-        e.respondWith(
-            caches.match(e.request).then(cached => cached || fetch(e.request))
-        );
-    }
+    // Network-first for ALL resources (always serve latest)
+    e.respondWith(
+        fetch(e.request)
+            .then(response => {
+                const clone = response.clone();
+                caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+                return response;
+            })
+            .catch(() => caches.match(e.request))
+    );
 });
