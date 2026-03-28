@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shmiloku-v1';
+const CACHE_NAME = 'shmiloku-v2';
 const ASSETS = [
     './',
     './index.html',
@@ -7,6 +7,7 @@ const ASSETS = [
     './js/game.js',
     './js/renderer.js',
     './js/storage.js',
+    './js/i18n.js',
     './js/puzzle-data.js',
     './js/sw-register.js',
     './manifest.json'

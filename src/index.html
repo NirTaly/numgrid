@@ -1,66 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="#4361ee">
+    <meta name="theme-color" content="#3a7bd5">
     <meta name="description" content="Shmiloku - A number placement puzzle game with irregular regions">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
     <title>Shmiloku</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234361ee'/><text x='50' y='72' text-anchor='middle' fill='white' font-size='56' font-weight='bold' font-family='sans-serif'>#</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233a7bd5'/><text x='50' y='72' text-anchor='middle' fill='white' font-size='56' font-weight='bold' font-family='sans-serif'>#</text></svg>">
 </head>
 <body>
 
-    <!-- ============================================================
-         SCREEN: MAIN MENU
-         ============================================================ -->
+    <!-- SCREEN: MAIN MENU -->
     <div id="screen-menu" class="screen menu-screen scrollable active">
-        <div class="menu-title">Shmiloku</div>
-        <div class="menu-subtitle">Number Placement Puzzle</div>
-
+        <div class="menu-title" data-i18n="title">Shmiloku</div>
+        <div class="menu-subtitle" data-i18n="subtitle">Number Placement Puzzle</div>
         <div class="menu-options">
-            <button id="btn-play" class="menu-btn">
-                Play
-                <div class="btn-desc">Choose a puzzle</div>
-            </button>
-            <button id="btn-how-to-play" class="menu-btn">
-                How to Play
-                <div class="btn-desc">Learn the rules</div>
-            </button>
-            <button id="btn-settings" class="menu-btn">
-                Settings
-                <div class="btn-desc">Customize your experience</div>
-            </button>
+            <button id="btn-play" class="menu-btn" data-i18n="play">Play</button>
+            <button id="btn-how-to-play" class="menu-btn" data-i18n="howToPlay">How to Play</button>
+            <button id="btn-settings" class="menu-btn" data-i18n="settings">Settings</button>
         </div>
     </div>
 
-    <!-- ============================================================
-         SCREEN: LEVEL SELECT
-         ============================================================ -->
+    <!-- SCREEN: LEVEL SELECT -->
     <div id="screen-levels" class="screen scrollable">
         <div class="header">
-            <button class="btn-icon btn-back">&larr;</button>
-            <span class="header-title">Choose Puzzle</span>
+            <button class="btn-icon btn-back" data-i18n="back">&larr;</button>
+            <span class="header-title" data-i18n="choosePuzzle">Choose Puzzle</span>
             <span></span>
         </div>
         <div class="size-tabs" id="size-tabs"></div>
         <div class="level-select" id="level-list"></div>
     </div>
 
-    <!-- ============================================================
-         SCREEN: GAME
-         ============================================================ -->
+    <!-- SCREEN: GAME -->
     <div id="screen-game" class="screen no-scroll">
-        <div class="header">
-            <button class="btn-icon btn-back">&larr;</button>
+        <div class="header game-header">
+            <button class="btn-icon btn-back" data-i18n="back">&larr;</button>
             <span id="level-info" class="header-info"></span>
-            <div class="header-info">
-                <span id="timer" class="timer">0:00</span>
-            </div>
+            <span id="timer" class="timer">0:00</span>
         </div>
 
         <div class="grid-container">
@@ -79,115 +61,93 @@
                 <button class="numpad-btn" data-num="8">8</button>
                 <button class="numpad-btn erase" data-action="erase">&times;</button>
             </div>
-
             <div class="actions">
-                <button id="btn-undo" class="action-btn">
-                    <span class="icon">&#8630;</span> Undo
-                </button>
-                <button id="btn-notes" class="action-btn">
-                    <span class="icon">&#9998;</span> Notes
-                </button>
-                <button id="btn-hint" class="action-btn">
-                    <span class="icon">&#128161;</span> Hint
-                </button>
-                <button id="btn-redo" class="action-btn">
-                    <span class="icon">&#8631;</span> Redo
-                </button>
+                <button id="btn-undo" class="action-btn"><span class="icon">&#8630;</span> <span data-i18n="undo">Undo</span></button>
+                <button id="btn-notes" class="action-btn"><span class="icon">&#9998;</span> <span data-i18n="notes">Notes</span></button>
+                <button id="btn-hint" class="action-btn"><span class="icon">&#128161;</span> <span data-i18n="hint">Hint</span></button>
+                <button id="btn-redo" class="action-btn"><span class="icon">&#8631;</span> <span data-i18n="redo">Redo</span></button>
             </div>
         </div>
     </div>
 
-    <!-- ============================================================
-         SCREEN: HOW TO PLAY
-         ============================================================ -->
+    <!-- SCREEN: HOW TO PLAY -->
     <div id="screen-howto" class="screen scrollable">
         <div class="header">
-            <button class="btn-icon btn-back">&larr;</button>
-            <span class="header-title">How to Play</span>
+            <button class="btn-icon btn-back" data-i18n="back">&larr;</button>
+            <span class="header-title" data-i18n="rules">Rules</span>
             <span></span>
         </div>
-        <div style="padding: 20px; overflow-y: auto; flex: 1;">
-            <div style="max-width: 480px; margin: 0 auto;">
-                <h2 style="margin-bottom: 16px;">Rules</h2>
-
-                <div style="margin-bottom: 20px; padding: 16px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);">
-                    <h3 style="color: var(--accent); margin-bottom: 8px;">1. Fill the Grid</h3>
-                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">
-                        Place numbers in every empty cell. Each cell belongs to a colored region.
-                    </p>
-                </div>
-
-                <div style="margin-bottom: 20px; padding: 16px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);">
-                    <h3 style="color: var(--accent); margin-bottom: 8px;">2. Region Rule</h3>
-                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">
-                        Each colored region of size N must contain the numbers <strong>1 through N</strong>, each exactly once.
-                        For example, a region with 4 cells needs the numbers 1, 2, 3, and 4.
-                    </p>
-                </div>
-
-                <div style="margin-bottom: 20px; padding: 16px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);">
-                    <h3 style="color: var(--accent); margin-bottom: 8px;">3. Row &amp; Column Rule</h3>
-                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">
-                        Each <strong>row</strong> and each <strong>column</strong> must contain unique numbers &mdash; no repeats allowed.
-                    </p>
-                </div>
-
-                <div style="margin-bottom: 20px; padding: 16px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);">
-                    <h3 style="color: var(--accent); margin-bottom: 8px;">Tips</h3>
-                    <ul style="color: var(--text-secondary); font-size: 14px; line-height: 1.8; padding-left: 20px;">
-                        <li>Use <strong>Notes</strong> mode to mark possible candidates</li>
-                        <li>Look for cells where only one number fits</li>
-                        <li>Small regions (2-3 cells) are great starting points</li>
-                        <li>Check both region AND row/column constraints together</li>
-                    </ul>
-                </div>
+        <div class="howto-content">
+            <div class="rule-card">
+                <h3 data-i18n="rule1Title">1. Fill the Grid</h3>
+                <p data-i18n="rule1Text">Place numbers in every empty cell. Each cell belongs to a colored region.</p>
+            </div>
+            <div class="rule-card">
+                <h3 data-i18n="rule2Title">2. Region Rule</h3>
+                <p data-i18n="rule2Text">Each colored region of size N must contain the numbers 1 through N, each exactly once.</p>
+            </div>
+            <div class="rule-card">
+                <h3 data-i18n="rule3Title">3. Row &amp; Column Rule</h3>
+                <p data-i18n="rule3Text">Each row and each column must contain unique numbers — no repeats allowed.</p>
+            </div>
+            <div class="rule-card">
+                <h3 data-i18n="tipsTitle">Tips</h3>
+                <ul>
+                    <li data-i18n="tip1">Use Notes mode to mark possible candidates</li>
+                    <li data-i18n="tip2">Look for cells where only one number fits</li>
+                    <li data-i18n="tip3">Small regions are great starting points</li>
+                    <li data-i18n="tip4">Check region AND row/column constraints together</li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <!-- ============================================================
-         SCREEN: SETTINGS
-         ============================================================ -->
+    <!-- SCREEN: SETTINGS -->
     <div id="screen-settings" class="screen scrollable">
         <div class="header">
-            <button class="btn-icon btn-back">&larr;</button>
-            <span class="header-title">Settings</span>
+            <button class="btn-icon btn-back" data-i18n="back">&larr;</button>
+            <span class="header-title" data-i18n="settings">Settings</span>
             <span></span>
         </div>
         <div class="settings-list">
             <div class="setting-item">
                 <div>
-                    <div class="setting-label">Show Errors</div>
-                    <div class="setting-desc">Highlight conflicting numbers</div>
+                    <div class="setting-label" data-i18n="showErrors">Show Errors</div>
+                    <div class="setting-desc" data-i18n="showErrorsDesc">Highlight conflicting numbers</div>
                 </div>
                 <div id="toggle-errors" class="toggle on"></div>
             </div>
             <div class="setting-item">
                 <div>
-                    <div class="setting-label">Show Timer</div>
-                    <div class="setting-desc">Display elapsed time</div>
+                    <div class="setting-label" data-i18n="showTimer">Show Timer</div>
+                    <div class="setting-desc" data-i18n="showTimerDesc">Display elapsed time</div>
                 </div>
                 <div id="toggle-timer" class="toggle on"></div>
             </div>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         COMPLETION OVERLAY
-         ============================================================ -->
-    <div id="overlay-complete" class="overlay">
-        <div class="overlay-card">
-            <h2>Puzzle Complete!</h2>
-            <div class="stats"></div>
-            <div class="btn-row">
-                <button id="btn-back-to-menu" class="btn-secondary">Menu</button>
-                <button id="btn-next-puzzle" class="btn-primary">Next Puzzle</button>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label" data-i18n="language">Language</div>
+                    <div class="setting-desc" data-i18n="languageDesc">Choose your language</div>
+                </div>
+                <select id="lang-select" class="lang-select"></select>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- COMPLETION OVERLAY -->
+    <div id="overlay-complete" class="overlay">
+        <div class="overlay-card">
+            <h2 data-i18n="puzzleComplete">Puzzle Complete!</h2>
+            <div class="stats"></div>
+            <div class="btn-row">
+                <button id="btn-back-to-menu" class="btn-secondary" data-i18n="menu">Menu</button>
+                <button id="btn-next-puzzle" class="btn-primary" data-i18n="nextPuzzle">Next Puzzle</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/storage.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/game.js"></script>
     <script src="js/renderer.js"></script>
     <script src="js/puzzle-data.js"></script>

@@ -19,6 +19,13 @@ class App {
             this.puzzleBank = PUZZLE_DATA;
         }
 
+        // i18n
+        this.i18n = new I18n();
+        document.documentElement.dir = this.i18n.dir;
+        document.documentElement.lang = this.i18n.lang;
+        this.i18n.onChange(() => this._applyTranslations());
+        this._applyTranslations();
+
         // Load settings
         const settings = Storage.getSettings();
         this.game.showErrors = settings.showErrors;
@@ -34,6 +41,13 @@ class App {
 
         // Show menu
         this.showScreen('menu');
+    }
+
+    _applyTranslations() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            el.textContent = this.i18n.t(key);
+        });
     }
 
     showScreen(name) {
@@ -78,7 +92,6 @@ class App {
         const completed = Storage.getCompleted();
 
         const diffs = ['easy', 'medium', 'hard'];
-        const diffLabels = {easy: 'Easy', medium: 'Medium', hard: 'Hard'};
         const diffStars = {easy: '\u2605', medium: '\u2605\u2605', hard: '\u2605\u2605\u2605'};
 
         for (const diff of diffs) {
@@ -89,7 +102,7 @@ class App {
             section.className = 'diff-section';
 
             const h3 = document.createElement('h3');
-            h3.textContent = `${diffLabels[diff]} ${diffStars[diff]}`;
+            h3.textContent = `${this.i18n.t(diff)} ${diffStars[diff]}`;
             section.appendChild(h3);
 
             const grid = document.createElement('div');
@@ -166,7 +179,7 @@ class App {
     _showCompletionOverlay() {
         const overlay = document.getElementById('overlay-complete');
         const statsEl = overlay.querySelector('.stats');
-        statsEl.textContent = `Time: ${this.game.formatTimer()}`;
+        statsEl.textContent = `${this.i18n.t('time')}: ${this.game.formatTimer()}`;
         overlay.classList.add('active');
 
         // Vibrate
@@ -354,6 +367,24 @@ class App {
             const timerEl = document.getElementById('timer');
             if (timerEl) timerEl.style.display = val ? '' : 'none';
         });
+
+        // Language selector
+        const langSelect = document.getElementById('lang-select');
+        if (langSelect) {
+            langSelect.innerHTML = '';
+            for (const lang of this.i18n.getAvailableLanguages()) {
+                const opt = document.createElement('option');
+                opt.value = lang.code;
+                opt.textContent = lang.name;
+                opt.selected = lang.code === this.i18n.lang;
+                langSelect.appendChild(opt);
+            }
+            langSelect.onchange = () => {
+                this.i18n.setLanguage(langSelect.value);
+                this._renderSettings();
+                this._renderLevelSelect();
+            };
+        }
     }
 
     _setupToggle(id, initialValue, onChange) {

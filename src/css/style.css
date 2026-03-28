@@ -299,24 +299,27 @@ body {
    ============================================================ */
 
 .controls {
-    padding: 6px 12px 0;
+    padding: 6px 8px;
     display: flex;
     flex-direction: column;
     gap: 6px;
     background: var(--bg-card);
     border-top: 1px solid var(--border);
-    flex-shrink: 0; /* never shrink controls */
+    flex-shrink: 0;
+    padding-bottom: max(6px, env(safe-area-inset-bottom));
 }
 
 .numpad {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     justify-content: center;
+    flex-wrap: nowrap;
 }
 
 .numpad-btn {
-    flex: 1;
-    max-width: 48px;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 52px;
     aspect-ratio: 1;
     border: 2px solid var(--border);
     border-radius: var(--radius-sm);
@@ -470,12 +473,54 @@ body {
     background: var(--accent-light);
 }
 
-.menu-btn .btn-desc {
-    font-size: 12px;
-    color: var(--text-secondary);
-    font-weight: 400;
-    margin-top: 2px;
+/* How to play */
+.howto-content {
+    padding: 16px;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    max-width: 480px;
+    margin: 0 auto;
 }
+
+.rule-card {
+    margin-bottom: 16px;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.rule-card h3 {
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.rule-card p, .rule-card li {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.rule-card ul {
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+/* Language selector */
+.lang-select {
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* RTL support */
+[dir="rtl"] .btn-back { transform: scaleX(-1); }
+[dir="rtl"] .rule-card ul { padding-left: 0; padding-right: 20px; }
 
 /* Level select */
 .level-select {
