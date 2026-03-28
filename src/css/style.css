@@ -50,12 +50,12 @@
 
 /* === Reset === */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; width: 100%; position: fixed; overscroll-behavior: none; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); user-select: none; -webkit-user-select: none; }
+html { height: 100%; width: 100%; overflow: hidden; }
+body { height: 100%; width: 100%; position: fixed; top: 0; left: 0; overscroll-behavior: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); user-select: none; -webkit-user-select: none; }
 select, input { user-select: auto; -webkit-user-select: auto; }
 
 /* === Screens === */
-.screen { display: none; flex-direction: column; position: absolute; inset: 0; overflow: hidden; }
+.screen { display: none; flex-direction: column; position: fixed; top: 0; left: 0; width: 100%; height: 100%; height: 100dvh; overflow: hidden; }
 .screen.active { display: flex; }
 .screen.scrollable { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; touch-action: pan-y; }
 .screen.no-scroll { touch-action: none; }

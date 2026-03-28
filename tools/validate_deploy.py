@@ -131,6 +131,12 @@ def validate_css(v):
 
     v.check('position: fixed' in css, 'body position:fixed (prevents iOS bounce)',
             'body not fixed — will bounce on iOS')
+
+    # Screens must have explicit height (not rely on inset:0 which fails on some mobile)
+    screen_rule = css[css.find('.screen {'):css.find('.screen {') + 300] if '.screen {' in css else ''
+    v.check('height: 100%' in screen_rule or '100dvh' in screen_rule,
+            'screen has explicit height (not just inset:0)',
+            'screen relies on inset:0 — breaks on some mobile browsers')
     v.check('overscroll-behavior' in css, 'overscroll-behavior set',
             'MISSING overscroll-behavior')
     v.check('touch-action: none' in css, 'touch-action:none for game screen',

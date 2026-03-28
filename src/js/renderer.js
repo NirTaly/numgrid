@@ -72,13 +72,6 @@ class Renderer {
                 else if (selVal !== 0 && val === selVal) {
                     cell.classList.add('same-number');
                 }
-                // Highlight same row/col/region
-                else if (sel) {
-                    if (sel.r === r || sel.c === c ||
-                        this.game.regions[sel.r][sel.c] === this.game.regions[r][c]) {
-                        cell.classList.add('highlighted');
-                    }
-                }
 
                 // Error
                 if (errors.has(key) && !this.game.isGiven(r, c)) {
