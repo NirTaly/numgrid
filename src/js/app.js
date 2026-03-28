@@ -211,46 +211,63 @@ class App {
     // ============================================================
 
     _setupEvents() {
-        // Grid clicks
-        document.getElementById('grid').addEventListener('pointerdown', (e) => {
+        // Transition guard: block taps for 350ms after screen switch
+        this._transitionTime = 0;
+        const origShowScreen = this.showScreen.bind(this);
+        this.showScreen = (name) => {
+            this._transitionTime = Date.now();
+            origShowScreen(name);
+        };
+
+        const guarded = (handler) => {
+            return (e) => {
+                if (Date.now() - this._transitionTime < 350) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+                handler(e);
+            };
+        };
+
+        // Grid taps — pointerdown for instant response (game screen only)
+        document.getElementById('grid').addEventListener('pointerdown', guarded((e) => {
             const cell = e.target.closest('.cell');
             if (!cell) return;
             const r = parseInt(cell.dataset.row);
             const c = parseInt(cell.dataset.col);
             this.game.select(r, c);
-        });
+        }));
 
-        // Number pad
-        document.getElementById('numpad').addEventListener('pointerdown', (e) => {
+        // Number pad — pointerdown for instant response
+        document.getElementById('numpad').addEventListener('pointerdown', guarded((e) => {
             const btn = e.target.closest('.numpad-btn');
             if (!btn) return;
-
             if (btn.dataset.num) {
                 this.game.placeNumber(parseInt(btn.dataset.num));
-                // Haptic
                 if (navigator.vibrate) navigator.vibrate(10);
             } else if (btn.dataset.action === 'erase') {
                 this.game.erase();
             }
-        });
+        }));
 
-        // Action buttons
-        document.getElementById('btn-undo')?.addEventListener('pointerdown', () => this.game.undo());
-        document.getElementById('btn-redo')?.addEventListener('pointerdown', () => this.game.redo());
-        document.getElementById('btn-notes')?.addEventListener('pointerdown', () => this.game.toggleNotesMode());
-        document.getElementById('btn-hint')?.addEventListener('pointerdown', () => this.game.hint());
+        // Action buttons — click (no tap-through risk)
+        document.getElementById('btn-undo')?.addEventListener('click', () => this.game.undo());
+        document.getElementById('btn-redo')?.addEventListener('click', () => this.game.redo());
+        document.getElementById('btn-notes')?.addEventListener('click', () => this.game.toggleNotesMode());
+        document.getElementById('btn-hint')?.addEventListener('click', () => this.game.hint());
 
-        // Menu buttons
-        document.getElementById('btn-play')?.addEventListener('pointerdown', () => this.showScreen('levels'));
-        document.getElementById('btn-how-to-play')?.addEventListener('pointerdown', () => this.showScreen('howto'));
-        document.getElementById('btn-settings')?.addEventListener('pointerdown', () => {
+        // Navigation buttons — click (prevents tap-through on screen switch)
+        document.getElementById('btn-play')?.addEventListener('click', () => this.showScreen('levels'));
+        document.getElementById('btn-how-to-play')?.addEventListener('click', () => this.showScreen('howto'));
+        document.getElementById('btn-settings')?.addEventListener('click', () => {
             this.showScreen('settings');
             this._renderSettings();
         });
 
-        // Back buttons
+        // Back buttons — click
         document.querySelectorAll('.btn-back').forEach(btn => {
-            btn.addEventListener('pointerdown', () => {
+            btn.addEventListener('click', () => {
                 if (this.currentScreen === 'game') {
                     this.showScreen('levels');
                     this.game.stopTimer();
@@ -260,15 +277,20 @@ class App {
             });
         });
 
-        // Completion overlay
-        document.getElementById('btn-next-puzzle')?.addEventListener('pointerdown', () => {
+        // Completion overlay — click
+        document.getElementById('btn-next-puzzle')?.addEventListener('click', () => {
             document.getElementById('overlay-complete').classList.remove('active');
             this._startNextPuzzle();
         });
-        document.getElementById('btn-back-to-menu')?.addEventListener('pointerdown', () => {
+        document.getElementById('btn-back-to-menu')?.addEventListener('click', () => {
             document.getElementById('overlay-complete').classList.remove('active');
             this.showScreen('levels');
         });
+
+        // Level items — guarded click (dynamically created)
+        document.getElementById('level-list')?.addEventListener('click', guarded((e) => {
+            // handled by _renderLevelSelect onclick
+        }));
 
         // Keyboard support
         document.addEventListener('keydown', (e) => {
@@ -295,6 +317,9 @@ class App {
                 this.game.deselect();
             }
         });
+
+        // Prevent pinch zoom
+        document.addEventListener('gesturestart', (e) => e.preventDefault());
     }
 
     _startNextPuzzle() {
@@ -350,19 +375,5 @@ class App {
 document.addEventListener('DOMContentLoaded', () => {
     new App();
 
-    // Prevent iOS bounce/overscroll — only block on game screen
-    document.addEventListener('touchmove', (e) => {
-        // Allow scrolling on any element that has overflow scroll/auto
-        let el = e.target;
-        while (el && el !== document.body) {
-            const style = window.getComputedStyle(el);
-            const overflowY = style.overflowY;
-            if (overflowY === 'auto' || overflowY === 'scroll') {
-                return; // Allow native scroll
-            }
-            el = el.parentElement;
-        }
-        // Block bounce on non-scrollable areas (game grid, controls)
-        e.preventDefault();
-    }, { passive: false });
+    // Scroll prevention handled by CSS touch-action per screen
 });

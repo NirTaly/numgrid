@@ -78,27 +78,21 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-html {
+html, body {
+    margin: 0;
+    padding: 0;
     height: 100%;
-    overflow: hidden;
-    position: fixed;
     width: 100%;
+    position: fixed;
+    overscroll-behavior: none;
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: var(--bg);
     color: var(--text);
-    height: 100%;
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
     user-select: none;
     -webkit-user-select: none;
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-    touch-action: manipulation;
 }
 
 /* ============================================================
@@ -189,8 +183,8 @@ body {
     align-items: center;
     justify-content: center;
     padding: 8px;
+    min-height: 0;
     overflow: hidden;
-    min-height: 0; /* crucial for flex shrink */
 }
 
 .grid {
@@ -395,7 +389,8 @@ body {
 .screen {
     display: none;
     flex-direction: column;
-    height: 100%;
+    position: absolute;
+    inset: 0;
     overflow: hidden;
 }
 
@@ -403,8 +398,17 @@ body {
     display: flex;
 }
 
-.screen.menu-screen {
+/* Scrollable screens */
+.screen.scrollable {
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+}
+
+/* Non-scrollable screens (game) */
+.screen.no-scroll {
+    touch-action: none;
 }
 
 .menu-screen {
@@ -466,11 +470,7 @@ body {
 /* Level select */
 .level-select {
     padding: 16px;
-    padding-bottom: max(16px, env(safe-area-inset-bottom));
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    flex: 1;
-    min-height: 0;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
 }
 
 .level-select h2 {
