@@ -59,11 +59,18 @@ class Renderer {
                 const key = `${r},${c}`;
 
                 // Clear dynamic classes
-                cell.classList.remove('selected', 'highlighted', 'error', 'just-placed');
+                cell.classList.remove('selected', 'highlighted', 'same-number', 'error', 'just-placed');
+
+                // Get selected cell's value for same-number highlighting
+                const selVal = sel ? this.game.grid[sel.r][sel.c] : 0;
 
                 // Selected cell
                 if (sel && sel.r === r && sel.c === c) {
                     cell.classList.add('selected');
+                }
+                // Same number highlight (all cells with same value)
+                else if (selVal !== 0 && val === selVal) {
+                    cell.classList.add('same-number');
                 }
                 // Highlight same row/col/region
                 else if (sel) {

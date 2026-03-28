@@ -3,71 +3,76 @@
    ============================================================ */
 
 :root {
-    --bg: #f8f9fa;
+    --bg: #faf8f5;
     --bg-card: #ffffff;
-    --text: #1a1a2e;
-    --text-secondary: #6c757d;
-    --accent: #4361ee;
-    --accent-light: #e8ecff;
-    --error: #ef476f;
-    --success: #06d6a0;
-    --warning: #ffd166;
-    --given-bg: #e9ecef;
-    --given-text: #495057;
-    --selected-bg: #4361ee;
-    --selected-text: #ffffff;
-    --highlight-bg: #e8ecff;
-    --border: #dee2e6;
-    --region-border: #1a1a2e;
-    --cell-border: #ced4da;
-    --shadow: 0 2px 8px rgba(0,0,0,0.08);
-    --shadow-lg: 0 4px 16px rgba(0,0,0,0.12);
+    --text: #2c2c2c;
+    --text-secondary: #7a7a7a;
+    --accent: #3a7bd5;
+    --accent-light: #eaf2fb;
+    --error: #d94f4f;
+    --success: #4caf7d;
+    --warning: #e8a838;
+    --given-bg: #f0ede8;
+    --given-text: #444;
+    --selected-bg: rgba(58, 123, 213, 0.18);
+    --selected-text: #2c2c2c;
+    --selected-border: #3a7bd5;
+    --highlight-bg: rgba(58, 123, 213, 0.07);
+    --same-number-bg: rgba(58, 123, 213, 0.12);
+    --border: #e0ddd8;
+    --region-border: #444;
+    --cell-border: #ccc8c0;
+    --shadow: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
     --radius: 12px;
     --radius-sm: 8px;
 
-    /* Region colors - soft pastels */
-    --region-0: #ffeaa7;
-    --region-1: #dfe6e9;
-    --region-2: #fab1a0;
-    --region-3: #81ecec;
-    --region-4: #a29bfe;
-    --region-5: #ffeaa7;
-    --region-6: #55efc4;
-    --region-7: #fd79a8;
-    --region-8: #74b9ff;
-    --region-9: #e17055;
-    --region-10: #00cec9;
-    --region-11: #6c5ce7;
+    /* Region colors — muted, earthy pastels that harmonize */
+    --region-0: #fef3dc;
+    --region-1: #e8f0f2;
+    --region-2: #fde4dd;
+    --region-3: #ddf2ef;
+    --region-4: #e9e4f5;
+    --region-5: #f5ecd7;
+    --region-6: #ddf0e2;
+    --region-7: #f5dde8;
+    --region-8: #dde8f5;
+    --region-9: #f5e0d0;
+    --region-10: #d8f0ed;
+    --region-11: #e6ddf5;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg: #0f0f1a;
-        --bg-card: #1a1a2e;
-        --text: #e8e8e8;
-        --text-secondary: #8899aa;
-        --accent: #5a7cff;
-        --accent-light: #1e2a4a;
-        --given-bg: #252540;
-        --given-text: #aabbcc;
-        --highlight-bg: #1e2a4a;
-        --border: #2a2a3e;
-        --region-border: #888;
-        --cell-border: #333355;
+        --bg: #121218;
+        --bg-card: #1c1c26;
+        --text: #e0ddd8;
+        --text-secondary: #888;
+        --accent: #6a9fdf;
+        --accent-light: #1e2838;
+        --given-text: #aaa;
+        --selected-bg: rgba(106, 159, 223, 0.2);
+        --selected-text: #e0ddd8;
+        --selected-border: #6a9fdf;
+        --highlight-bg: rgba(106, 159, 223, 0.08);
+        --same-number-bg: rgba(106, 159, 223, 0.14);
+        --border: #2a2a36;
+        --region-border: #777;
+        --cell-border: #333;
         --shadow: 0 2px 8px rgba(0,0,0,0.3);
 
-        --region-0: #3d3520;
-        --region-1: #2a3035;
-        --region-2: #3d2520;
-        --region-3: #1a3535;
-        --region-4: #2a2540;
-        --region-5: #3d3520;
-        --region-6: #1a3525;
-        --region-7: #3d2035;
-        --region-8: #1a2535;
-        --region-9: #3d2520;
-        --region-10: #1a3530;
-        --region-11: #2a2040;
+        --region-0: #2a2518;
+        --region-1: #1c2528;
+        --region-2: #2a1e1c;
+        --region-3: #1a2826;
+        --region-4: #221e2c;
+        --region-5: #28241a;
+        --region-6: #1a2820;
+        --region-7: #2a1c22;
+        --region-8: #1a2230;
+        --region-9: #2a2018;
+        --region-10: #182826;
+        --region-11: #221a2c;
     }
 }
 
@@ -224,10 +229,15 @@ body {
     background: var(--selected-bg) !important;
     color: var(--selected-text);
     z-index: 2;
+    box-shadow: inset 0 0 0 2.5px var(--selected-border);
 }
 
 .cell.highlighted {
     background: var(--highlight-bg) !important;
+}
+
+.cell.same-number {
+    background: var(--same-number-bg) !important;
 }
 
 .cell.error {
